@@ -1,1 +1,1 @@
-# cocktailBot
+# The Cocktail Bot
