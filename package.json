@@ -9,6 +9,8 @@
   "author": "Michael Xie",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/rest": "^1.0.1",
+    "discord-reply": "^0.1.2",
     "discord.js": "^14.1.2",
     "dotenv": "^16.0.1"
   }
