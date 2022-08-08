@@ -4,8 +4,8 @@ const { clientId, guildId, token } = require('./sensitive/config.json');
 
 const commands = [
 	new SlashCommandBuilder().setName('help').setDescription('Help with the Bot'),
-	new SlashCommandBuilder().setName('old-fashioned').setDescription('Replies with server info!'),
-	new SlashCommandBuilder().setName('gin-and-tonic').setDescription('Replies with user info!'),
+	new SlashCommandBuilder().setName('cmdlist').setDescription('All the commands you could want!'),
+	new SlashCommandBuilder().setName('about').setDescription('About this app/bot!'),
 ]
 	.map(command => command.toJSON());
 
