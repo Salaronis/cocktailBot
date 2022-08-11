@@ -8,22 +8,37 @@ const client = new discord.Client({ intents: [GatewayIntentBits.GuildMessages, G
 
 const prefix = 'cb';
 const maxIn = 5;
+
+const options = {
+    method: 'GET',
+    headers: {
+        'Key': "1'"
+    }
+};
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
   
   client.on('messageCreate', (msg) => {
     const input = msg.content;
-    const cmds = input.split();
-    console.log(cmds[0]);
-    console.log(!(cmds[0] === 'prefix'));
-    if(!(cmds[0] === 'prefix') || msg.author.bot) return;
+    const cmds = input.split(' ');
+    console.log(cmds);
+    if(!(cmds[0] === prefix) || msg.author.bot) return;
 
     if(cmds[1] === 'random'){
+        msg.reply('Here\'s a recipe I think you\'ll like');
 
+        fetch('www.thecocktaildb.com/api/json/v1/1/random.php', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+    }
+    if(cmds[1] === 'margarita'){
+        msg.reply('Here is a margarita recipe');
     }
     if(cmds.length > maxIn){
-        msg.reply('Too Many Words!, Please input '+ value +' words including the prefix: cB');
+        msg.reply('Too Many Words!, Please input '+ value +' words including the prefix: cb');
     }
     /*
     if(cmds[0] === 'margarita'){
