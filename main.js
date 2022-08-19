@@ -11,8 +11,8 @@ const maxIn = 5;
 
 const options = {
     method: 'GET',
-    url: 'https://the-cocktail-db.p.rapidapi.com/filter.php',
-    params: {i: 'Gin'},
+    url: "",
+    params: {},
     headers: {
       'X-RapidAPI-Key': apiKey,
       'X-RapidAPI-Host': apiHost
