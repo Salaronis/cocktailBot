@@ -32,19 +32,32 @@ axios.request(options).then(function (response) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
+
   client.on('messageCreate', (msg) => {
 
     function request(){
         axios.request(options).then(function (response) {
             info = response.data;
-            console.log(info);
-            let strIng = '';
-            for(let i = 16; i < 31; i++){
-                if(info.drinks[0][i] != null){
-                   strIng =  strIng.concat(info.drinks[0][i]);
-                   strIng =  strIng.concat( ' ' + info.drinks[0][i+15] + '\n');
+            let strIng = [];
+            let ingCount = 0;
+            let measureCount = 1;
+            //FIX LATER!!!
+            for(var i in info.drinks[0]){
+                let string = i;
+                console.log(i);
+                console.log(info.drinks[0]. string.value);
+                if(i.substring(0,13) === 'strIngredient'){
+                   // console.log(info.drinks[0].i);
+                    strIng[ingCount] = info.drinks[0].i;
+                    ingCount += 2;
+                }
+                if(i.substring(0,10) === 'strMeasure'){
+                    //console.log(info.drinks[0].i);
+                    strIng[measureCount] = info.drinks[0].i;
+                    measureCount += 2;
                 }
             }
+            //console.log(strIng);
             msg.reply(info.drinks[0].strDrinkThumb + '\n' +  info.drinks[0].strDrink + '\n' + info.drinks[0].strGlass + '\n' + info.drinks[0].strIngredient1 + ' ' + info.drinks[0].strMeasure1 
              + '\n' + info.drinks[0].strIngredient2 + ' ' + info.drinks[0].strMeasure2 + '\n' + info.drinks[0].strIngredient3 + ' '+ info.drinks[0].strMeasure3 + '\n' + info.drinks[0].strInstructions);
         }).catch(function (error) {
@@ -54,7 +67,7 @@ client.on('ready', () => {
 
     const input = msg.content;
     const cmds = input.split(' ');
-    console.log(cmds);
+
     if(!(cmds[0] === prefix) || msg.author.bot) return;
 
     var info = "";
@@ -63,7 +76,10 @@ client.on('ready', () => {
         options.url = "https://the-cocktail-db.p.rapidapi.com/random.php";
         request();
     }
-    //
+    // Specific Cocktail Request
+    if(cmds[1] === 'ct'){
+        options.url = ""
+    }
     //Request for Ingredient Specific Cocktails
     if(cmds[1] === 'ing'){
         
@@ -74,6 +90,32 @@ client.on('ready', () => {
         }).catch(function (error){
             console.error(error);
             msg.reply('something went wrong, please try again');
+        });
+    }
+    //All Ingredients
+    if(cmds[1] === 'allIngredients'){
+        let start;
+        let end; 
+        if(cmds[2] == 1){
+            start = 0;
+            end = response.data.drinks.length/2;
+        }else if(cmds[2] == 2){
+            start = response.data.drinks.length/2;
+            end = response.data.drinks.length;
+        }else{
+            console.error();
+        }
+        options.url = 'https://the-cocktail-db.p.rapidapi.com/list.php';
+        options.params.i = 'list';
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+            let strIng = '';
+            for(let i = start; i < end; i++){
+                strIng = strIng.concat(response.data.drinks[i].strIngredient1);
+            }
+            msg.reply(strIng);
+        }).catch(function (error) {
+            console.error(error);
         });
     }
     if(cmds.length > maxIn){
