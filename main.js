@@ -1,5 +1,5 @@
 // All necessary information for bot
-const { GatewayIntentBits } = require('discord.js')
+const { GatewayIntentBits, messageLink } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const discord = require('discord.js')
 const { token, apiHost, apiKey } = require('./sensitive/config.json')
@@ -38,26 +38,6 @@ client.on('ready', () => {
     function request(){
         axios.request(options).then(function (response) {
             info = response.data;
-            let strIng = [];
-            let ingCount = 0;
-            let measureCount = 1;
-            //FIX LATER!!!
-            for(var i in info.drinks[0]){
-                let string = i;
-                console.log(i);
-                console.log(info.drinks[0]. string.value);
-                if(i.substring(0,13) === 'strIngredient'){
-                   // console.log(info.drinks[0].i);
-                    strIng[ingCount] = info.drinks[0].i;
-                    ingCount += 2;
-                }
-                if(i.substring(0,10) === 'strMeasure'){
-                    //console.log(info.drinks[0].i);
-                    strIng[measureCount] = info.drinks[0].i;
-                    measureCount += 2;
-                }
-            }
-            //console.log(strIng);
             msg.reply(info.drinks[0].strDrinkThumb + '\n' +  info.drinks[0].strDrink + '\n' + info.drinks[0].strGlass + '\n' + info.drinks[0].strIngredient1 + ' ' + info.drinks[0].strMeasure1 
              + '\n' + info.drinks[0].strIngredient2 + ' ' + info.drinks[0].strMeasure2 + '\n' + info.drinks[0].strIngredient3 + ' '+ info.drinks[0].strMeasure3 + '\n' + info.drinks[0].strInstructions);
         }).catch(function (error) {
@@ -78,15 +58,20 @@ client.on('ready', () => {
     }
     // Specific Cocktail Request
     if(cmds[1] === 'ct'){
-        options.url = ""
+        options.url = "https://the-cocktail-db.p.rapidapi.com/search.php"
+        options.params.i = cmds[2];
+        request();
     }
     //Request for Ingredient Specific Cocktails
     if(cmds[1] === 'ing'){
-        
         options.url = 'https://the-cocktail-db.p.rapidapi.com/filter.php';
         options.params.i = cmds[2];
         axios.request(options).then(function (response){
             console.log(response.data);
+            for(let i = 0; i < 5; i++){
+                let info = response.data.drinks[i].strDrink;
+                msg.channel.send(info);
+            }
         }).catch(function (error){
             console.error(error);
             msg.reply('something went wrong, please try again');
@@ -123,6 +108,7 @@ client.on('ready', () => {
     }
 
 })
+
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
