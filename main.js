@@ -81,22 +81,28 @@ client.on('ready', () => {
     if(cmds[1] === 'allIngredients'){
         let start;
         let end; 
-        if(cmds[2] == 1){
-            start = 0;
-            end = response.data.drinks.length/2;
-        }else if(cmds[2] == 2){
-            start = response.data.drinks.length/2;
-            end = response.data.drinks.length;
-        }else{
-            console.error();
-        }
         options.url = 'https://the-cocktail-db.p.rapidapi.com/list.php';
         options.params.i = 'list';
         axios.request(options).then(function (response) {
+            if(cmds[2] == 1){
+                start = 0;
+                end = response.data.drinks.length/4;
+            }else if(cmds[2] == 2){
+                start = response.data.drinks.length/4;
+                end = response.data.drinks.length/2;
+            }else if(cmds[2] == 3){
+                start = response.data.drinks.length/2;
+                end = 3*response.data.drinks.length/4;
+            }else if(cmds[2] == 4){
+                start = 3*response.data.drinks.length/4;
+                end = response.data.drinks.length;
+            }else{
+                console.error();
+            }
             console.log(response.data);
             let strIng = '';
             for(let i = start; i < end; i++){
-                strIng = strIng.concat(response.data.drinks[i].strIngredient1);
+                strIng = strIng.concat( response.data.drinks[i].strIngredient1, '\n');
             }
             msg.reply(strIng);
         }).catch(function (error) {
