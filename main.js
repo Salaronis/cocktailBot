@@ -89,8 +89,7 @@ client.on('ready', () => {
                 end = response.data.drinks.length/4;
             }else if(cmds[2] == 2){
                 start = response.data.drinks.length/4;
-                end = response.data.drinks.length/2;
-            }else if(cmds[2] == 3){
+                end = response.data.drinks.length/2; 
                 start = response.data.drinks.length/2;
                 end = 3*response.data.drinks.length/4;
             }else if(cmds[2] == 4){
@@ -119,13 +118,13 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
 	if (interaction.commandName === 'help') {
-		await interaction.reply('This Application allows you to request a cocktail Recipe, provided from TheCocktailDB');
+		await interaction.reply('This Application allows you to request a cocktail Recipe, provided from TheCocktailDB! If you have any suggestions please let me know :D');
 	}
     if(interaction.commandName === 'about'){
-        await interaction.reply('')
+        await interaction.reply('This bot was made by Michael Xie and is using Discord.js, TheCocktailDB, RapidAPI, Node.js, and a lot of google searching and crying over JSON files :\'D')
     }
     if(interaction.commandName === 'cmdlist'){
-
+        await interaction.reply(' cb : The Command Word \n random : Random Cocktail \n ct [string] : specific cocktail request \n ing [string] : specific ingredient cocktails \n allIngredients [1-4] : Lists all Ingredients, separated into 4');
     }
 })
 
