@@ -34,9 +34,33 @@ client.on('ready', () => {
   client.on('messageCreate', (msg) => {
     function request(){
         axios.request(options).then(function (response) {
-            info = response.data;
-            msg.reply(info.drinks[0].strDrinkThumb + '\n' +  info.drinks[0].strDrink + '\n' + info.drinks[0].strGlass + '\n' + info.drinks[0].strIngredient1 + ' ' + info.drinks[0].strMeasure1 
-             + '\n' + info.drinks[0].strIngredient2 + ' ' + info.drinks[0].strMeasure2 + '\n' + info.drinks[0].strIngredient3 + ' '+ info.drinks[0].strMeasure3 + '\n' + info.drinks[0].strInstructions);
+            info = response.data.drinks[0];
+            let string = '';
+            const array = [
+            info.strIngredient1,info.strMeasure1,
+            info.strIngredient2,info.strMeasure2,
+            info.strIngredient3,info.strMeasure3,
+            info.strIngredient4,info.strMeasure4,
+            info.strIngredient5,info.strMeasure5,
+            info.strIngredient6,info.strMeasure6,
+            info.strIngredient7,info.strMeasure7,
+            info.strIngredient8,info.strMeasure8,
+            info.strIngredient9,info.strMeasure9,
+            info.strIngredient10,info.strMeasure10,
+            info.strIngredient11,info.strMeasure11,
+            info.strIngredient12,info.strMeasure12,
+            info.strIngredient13,info.strMeasure13,
+            info.strIngredient14,info.strMeasure14,
+            info.strIngredient15,info.strMeasure15];
+            for(let i = 0; i < array.length; i+=2){
+                if(array[i] == null){
+                    break;
+                }else{
+                    string = string.concat(array[i]+' '+ array[i+1]+ '\n');
+                }
+            }
+            console.log(string);
+            msg.reply(info.strDrinkThumb + '\n' +  info.strDrink + '\n' + info.strGlass + '\n'+ string + info.strInstructions);
         }).catch(function (error) {
             console.error(error);
         });
@@ -63,12 +87,37 @@ client.on('ready', () => {
         console.log(drink.trim());
         options.params.s = drink.trim();
         axios.request(options).then(function (response){
-            console.log(response.data);
-            info = response.data.drinks[0];
-            console.log(info);
-            msg.reply(info.strDrinkThumb + '\n' +  info.strDrink + '\n' + info.strGlass + '\n' + info.strIngredient1 + ' ' + info.strMeasure1 
-             + '\n' + info.strIngredient2 + ' ' + info.strMeasure2 + '\n' + info.strIngredient3 + ' '+ info.strMeasure3 + '\n' + info.strIngredient4 + ' '+ info.strMeasure4
-             + '\n' + info.strInstructions);
+            axios.request(options).then(function (response) {
+                info = response.data.drinks[0];
+                let string = '';
+                const array = [
+                info.strIngredient1,info.strMeasure1,
+                info.strIngredient2,info.strMeasure2,
+                info.strIngredient3,info.strMeasure3,
+                info.strIngredient4,info.strMeasure4,
+                info.strIngredient5,info.strMeasure5,
+                info.strIngredient6,info.strMeasure6,
+                info.strIngredient7,info.strMeasure7,
+                info.strIngredient8,info.strMeasure8,
+                info.strIngredient9,info.strMeasure9,
+                info.strIngredient10,info.strMeasure10,
+                info.strIngredient11,info.strMeasure11,
+                info.strIngredient12,info.strMeasure12,
+                info.strIngredient13,info.strMeasure13,
+                info.strIngredient14,info.strMeasure14,
+                info.strIngredient15,info.strMeasure15];
+                for(let i = 0; i < array.length; i+=2){
+                    if(array[i] == null){
+                        break;
+                    }else{
+                        string = string.concat(array[i]+' '+ array[i+1]+ '\n');
+                    }
+                }
+                console.log(string);
+                msg.reply(info.strDrinkThumb + '\n' +  info.strDrink + '\n' + info.strGlass + '\n'+ string + info.strInstructions);
+            }).catch(function (error) {
+                console.error(error);
+            });
         })
     }
 
